@@ -20,6 +20,7 @@ app.set('view engine', 'ejs'); // définit EJS comme module Views
 
 app.use(express.static('public')) // définit le chemin des fichiers statiques
 app.use(bodyParser.urlencoded({extended: false})); // l'appli utilise Body Parser
+
 app.use(myRouter); // l'appli utilise le Router
 
 

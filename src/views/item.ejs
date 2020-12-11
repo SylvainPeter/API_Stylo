@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="well">
-                        <form action="/stylos/<%= stylo.id %>?_method=PUT" method="POST">
+                        <form action="/api/stylos/<%= stylo.id %>?_method=PUT" method="POST">
                             <fieldset>
                                 <legend>Modifier le stylo</legend>
                                 <input type="text" placeholder="nouvelle marque" value="<%= stylo.marque %>" name="marque" required>

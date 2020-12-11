@@ -20,7 +20,7 @@
                             <strong><%= stylo.marque %>, </strong>
                             <%= stylo.couleur %>,
                             <%= stylo.prix %> euros, référence :
-                            <a href="/stylos/<%= stylo.id %>"><%= stylo.id %></a>
+                            <a href="/api/stylos/<%= stylo.id %>"><%= stylo.id %></a>
                             <a class="btn delete" href="../stylos/<%=stylo.id%>?_method=DELETE">Delete</a>
                         </li>
                         <!-- 
@@ -33,7 +33,7 @@ LA MEME CHOSE AVEC UNE DEMANDE DE CONFIRMATION
             </div>
             <div class="col-sm-4">
                 <div class="well">
-                    <form action="/stylos" method="POST">
+                    <form action="/api/stylos" method="POST">
                         <fieldset>
                             <legend>Ajouter un nouveau stylo</legend>
                             <input type="text" placeholder="marque" name="marque" required>

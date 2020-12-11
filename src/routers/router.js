@@ -1,47 +1,44 @@
 // LES ROUTES QUI VONT DECLENCHER DES ACTIONS !
 
 // importe les modules utiles
-const express = require('express');
-const path = require('path');
+const express = require('express')
+const path = require('path')
 
-const router = express.Router();
+const router = express.Router()
 
 // importe le controller
-const controller = require('../controllers/controller');
+const controller = require('../controllers/controller')
+const auth = require('../controllers/auth')
 
 
 // MIDDLEWARE POUR LE METHOD OVERRIDE !
 router.use(function(req, res, next) {
     if (req.query._method == 'DELETE') {
-        req.method = 'DELETE';
-        req.url = req.path;
+        req.method = 'DELETE'
+        req.url = req.path
     } else if (req.query._method == 'PUT') {
-        req.method = 'PUT';
-        req.url = req.path;
+        req.method = 'PUT'
+        req.url = req.path
     }
     next();
 });
 
-// TOUT CE QU'IL Y A PLUS BAS CONCERNE LA ROUTE / (roots)
-router.all('/', controller.showAll);
+router.get('/', auth.showLogin)
 
+router.get('/signup', auth.showSignup)
 
-// TOUT CE QU'IL Y A PLUS BAS CONCERNE LA ROUTE /stylos  
-router.route('/stylos')
-    .get(controller.getAll)
-    .post(controller.postNewstylo);
+router.get('/api', controller.showAllstylos)
 
+router.route('/api/stylos')
+    .get(controller.getAllstylos)
+    .post(controller.postNewstylo)
 
-// TOUT CE QU'IL Y A PLUS BAS CONCERNE LA ROUTE /stylos/id 
-router.route('/stylos/:id')
+router.route('/api/stylos/:id')
     .get(controller.getOneStylo)
     .put(controller.putOneStylo)
-    .delete(controller.deleteOneStylo);
+    .delete(controller.deleteOneStylo)
 
-/* TOUT CE QU'IL Y A PLUS BAS CONCERNE LA ROUTE /stylos/delete/id 
-router.all('/stylos/delete/:id', controller.deleteOneStylo);*/
-
-router.get('/about', controller.about);
+router.get('/api/about', controller.about)
 
 
-module.exports = router;
+module.exports = router
