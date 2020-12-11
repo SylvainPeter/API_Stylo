@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../views/head'); %>
+</head>
+
+<body class="container">
+    <header>
+        <%- include('../views/nav'); %>
+    </header>
+    <main>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="jumbotron">
+                    <h1>Ma collection de stylos</h1>
+                    <ul>
+                        <% stylos.forEach(function(stylo) { %>
+                        <li>
+                            <strong><%= stylo.marque %>, </strong>
+                            <%= stylo.couleur %>,
+                            <%= stylo.prix %> euros, référence :
+                            <a href="/stylos/<%= stylo.id %>"><%= stylo.id %></a>
+                            <a class="btn delete" href="../stylos/<%=stylo.id%>?_method=DELETE">Delete</a>
+                        </li>
+                        <!-- 
+LA MEME CHOSE AVEC UNE DEMANDE DE CONFIRMATION
+<a class="btn delete" onclick="return alert('Are You sure?')" href="../stylos/<%=stylo.id%>?_method=DELETE">Delete</a> 
+-->
+                        <% }); %>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="well">
+                    <form action="/stylos" method="POST">
+                        <fieldset>
+                            <legend>Ajouter un nouveau stylo</legend>
+                            <input type="text" placeholder="marque" name="marque" required>
+                            <input type="text" placeholder="couleur" name="couleur" required>
+                            <input type="number" placeholder="prix en €" name="prix" required> 
+                            <br><br>
+                            <button type="submit">Submit</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../views/footer'); %>
+    </footer>
+</body>
+<!--
+// Création d'une requête HTTP
+var req = new XMLHttpRequest();
+// Requête HTTP GET synchrone vers le fichier langages.txt publié localement
+req.open("DELETE", "/stylos/stylo.id", true);
+// Envoi de la requête
+req.send(null);
+// Affiche la réponse reçue pour la requête
+console.log(req.responseText);
+</script>
+-->
+
+</html>

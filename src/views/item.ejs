@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../views/head'); %>
+</head>
+
+<body class="container">
+    <header>
+        <%- include('../views/nav'); %>
+    </header>
+    <main>
+        <main>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="jumbotron">
+                        <h1>Fiche stylo</h1>
+                        <ul>
+                            <li>
+                                <strong><%= stylo.marque %>, </strong>
+                                <%= stylo.couleur %>,
+                                <%= stylo.prix %> euros, référence
+                                <%= stylo.id %>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="/stylos">Retour</a>
+                </div>
+                <div class="col-sm-4">
+                    <div class="well">
+                        <form action="/stylos/<%= stylo.id %>?_method=PUT" method="POST">
+                            <fieldset>
+                                <legend>Modifier le stylo</legend>
+                                <input type="text" placeholder="nouvelle marque" value="<%= stylo.marque %>" name="marque" required>
+                                <input type="text" placeholder="nouvelle couleur" value="<%= stylo.couleur %>" name="couleur" required>
+                                <input type="number" placeholder="nouveau prix en €" value="<%= stylo.prix %>" name="prix" required>
+                                <br><br>
+                                <button type="submit">Submit</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <%- include('../views/footer'); %>
+        </footer>
+</body>
+
+</html>
