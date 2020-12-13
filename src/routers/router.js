@@ -3,6 +3,8 @@
 // importe les modules utiles
 const express = require('express')
 const path = require('path')
+const passport = require('passport')
+const jwt = require('jsonwebtoken')
 
 const router = express.Router()
 
@@ -11,17 +13,8 @@ const controller = require('../controllers/controller')
 const auth = require('../controllers/auth')
 
 
-// MIDDLEWARE POUR LE METHOD OVERRIDE !
-router.use(function(req, res, next) {
-    if (req.query._method == 'DELETE') {
-        req.method = 'DELETE'
-        req.url = req.path
-    } else if (req.query._method == 'PUT') {
-        req.method = 'PUT'
-        req.url = req.path
-    }
-    next();
-});
+// utilise la méthode override
+router.use(controller.override)
 
 router.get('/', auth.showLogin)
 
@@ -39,6 +32,52 @@ router.route('/api/stylos/:id')
     .delete(controller.deleteOneStylo)
 
 router.get('/api/about', controller.about)
+
+
+router.post(
+    '/signup',
+    passport.authenticate('signup', { session: false }),
+    async (req, res, next) => {
+        res.json({
+            message: 'Signup successful',
+            user: req.user
+        })
+    }
+)
+
+// a successfully logged in user will generate a token
+router.post(
+    '/login',
+    async (req, res, next) => {
+        passport.authenticate(
+            'login',
+            async (err, user, info) => {
+                try {
+                    if (err || !user) {
+                        const error = new Error('An error occurred.');
+
+                        return next(error)
+                    }
+                    req.login(
+                        user, { session: false },
+                        /* false because you do not want to store the user details in a session. 
+                        You expect the user to send the token on each request to the secure routes.*/
+                        async (error) => {
+                            if (error) return next(error);
+
+                            const body = { _id: user._id, email: user.email }
+                            const token = jwt.sign({ user: body }, 'TOP_SECRET')
+
+                            return res.redirect('api/?secret_token=`{ token }`')
+                        }
+                    )
+                } catch (error) {
+                    return next(error);
+                }
+            }
+        )(req, res, next)
+    }
+)
 
 
 module.exports = router
